@@ -16,8 +16,4 @@ int main(int argc, char** argv)
 	delete app;
 }
 
-#else
-
-#error Hazel only supports Windows!
-
 #endif
