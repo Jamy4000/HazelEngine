@@ -10,6 +10,12 @@ workspace "Hazel"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "HazelEngine/ThirdParties/GLFW/include"
+
+include "HazelEngine/ThirdParties/GLFW"
+
 project "HazelEngine"
 	location "HazelEngine"
 	kind "SharedLib"
@@ -30,7 +36,15 @@ project "HazelEngine"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/ThirdParties/spdlog/include"
+		"%{prj.name}/ThirdParties/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib",
+		"dwmapi.lib"
 	}
 
 	filter "system:windows"
@@ -50,7 +64,11 @@ project "HazelEngine"
 		}
 
 	filter "configurations:Debug"
-		defines "HZ_DEBUG"
+		defines
+		{
+			"HZ_DEBUG",
+			"HZ_CORE_ASSERT"
+		}
 		symbols "On"
 
 	filter "configurations:Release"
@@ -98,7 +116,11 @@ project "Sandbox"
 		}
 
 	filter "configurations:Debug"
-		defines "HZ_DEBUG"
+		defines 
+		{
+			"HZ_DEBUG",
+			"HZ_ASSERT"
+		}
 		symbols "On"
 
 	filter "configurations:Release"
