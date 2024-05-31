@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "HazelEngine/ThirdParties/GLFW/include"
 IncludeDir["Glad"] = "HazelEngine/ThirdParties/Glad/include"
 IncludeDir["ImGui"] = "HazelEngine/ThirdParties/imgui"
+IncludeDir["glm"] = "HazelEngine/ThirdParties/glm"
 
 group "Dependencies"
 	include "HazelEngine/ThirdParties/GLFW"
@@ -48,7 +49,8 @@ project "HazelEngine"
 		"%{prj.name}/ThirdParties/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -111,7 +113,8 @@ project "Sandbox"
 	includedirs
 	{
 		"HazelEngine/ThirdParties/spdlog/include",
-		"HazelEngine/src"
+		"HazelEngine/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links
