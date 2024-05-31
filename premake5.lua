@@ -114,6 +114,7 @@ project "Sandbox"
 	{
 		"HazelEngine/ThirdParties/spdlog/include",
 		"HazelEngine/src",
+		"HazelEngine/ThirdParties",
 		"%{IncludeDir.glm}"
 	}
 
