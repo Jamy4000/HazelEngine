@@ -20,7 +20,7 @@ namespace Hazel
 	};
 
 	// interface representing a desktop system based Window
-	class HAZEL_API Window
+	class  Window
 	{
 	public:
 		// methods that returns void and takes an Event as parameter
