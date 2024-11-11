@@ -20,11 +20,6 @@ namespace Hazel
 
 	}
 
-	ImGuiLayer::~ImGuiLayer()
-	{
-
-	}
-
 	void ImGuiLayer::Begin()
 	{
 		ImGui_ImplOpenGL3_NewFrame();
