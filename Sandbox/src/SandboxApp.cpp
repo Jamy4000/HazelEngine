@@ -100,8 +100,7 @@ public:
 			}
 		)";
 
-		// equivalent to make_unique
-		m_Shader.reset(Hazel::Shader::Create(vertexSrc, fragmentSrc));
+		m_Shader = Hazel::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
 		std::string flatColorVertexSrc = R"(
 			#version 330 core
@@ -136,7 +135,7 @@ public:
 		)";
 
 		// equivalent to make_unique
-		m_FlatColorShader.reset(Hazel::Shader::Create(flatColorVertexSrc, flatColorShaderFragmentSrc));
+		m_FlatColorShader = Hazel::Shader::Create("FlatColor", flatColorVertexSrc, flatColorShaderFragmentSrc);
 
 		std::string textureVertexSrc = R"(
 			#version 330 core
@@ -172,13 +171,13 @@ public:
 		)";
 		
 		// equivalent to make_unique
-		m_TextureShader.reset(Hazel::Shader::Create("assets/shaders/Texture.glsl"));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Hazel::Texture2D::Create("assets/textures/checkboard.jpg");
 		m_TransparentTexture = Hazel::Texture2D::Create("assets/textures/Frog_Transparent.png");
 		
-		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_TextureShader)->Bind();
-		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(textureShader )->Bind();
+		std::dynamic_pointer_cast<Hazel::OpenGLShader>(textureShader )->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(const Hazel::Timestep ts) override
@@ -235,13 +234,15 @@ public:
 			}
 		}
 
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+		
 		// Rendering a Texture on a Quad
 		m_Texture->Bind();
 		static glm::mat4 textureQuadScale = glm::scale(glm::mat4(1.0f), glm::vec3(1.5f));
-		Hazel::Renderer::Submit(m_TextureShader, m_SquareVertexArray, textureQuadScale);
+		Hazel::Renderer::Submit(textureShader, m_SquareVertexArray, textureQuadScale);
 		
 		m_TransparentTexture->Bind();
-		Hazel::Renderer::Submit(m_TextureShader, m_SquareVertexArray, textureQuadScale);
+		Hazel::Renderer::Submit(textureShader, m_SquareVertexArray, textureQuadScale);
 
 		// Rendering a simple Triangle
 		// Hazel::Renderer::Submit(m_Shader, m_VertexArray);
@@ -263,10 +264,11 @@ public:
 	}
 
 private:
+	Hazel::ShaderLibrary m_ShaderLibrary;
 	Hazel::Ref<Hazel::Shader> m_Shader;
 	Hazel::Ref<Hazel::VertexArray> m_VertexArray;
 
-	Hazel::Ref<Hazel::Shader> m_FlatColorShader, m_TextureShader;
+	Hazel::Ref<Hazel::Shader> m_FlatColorShader;
 	Hazel::Ref<Hazel::VertexArray> m_SquareVertexArray;
 
 	Hazel::Ref<Hazel::Texture2D> m_Texture, m_TransparentTexture;
