@@ -17,6 +17,7 @@ IncludeDir["GLFW"] = "HazelEngine/ThirdParties/GLFW/include"
 IncludeDir["Glad"] = "HazelEngine/ThirdParties/Glad/include"
 IncludeDir["ImGui"] = "HazelEngine/ThirdParties/imgui"
 IncludeDir["glm"] = "HazelEngine/ThirdParties/glm"
+IncludeDir["stb_image"] = "HazelEngine/ThirdParties/stb_image"
 
 group "Dependencies"
 	include "HazelEngine/ThirdParties/GLFW"
@@ -42,6 +43,8 @@ project "HazelEngine"
 	{ 
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/ThirdParties/stb_image/**.h",
+		"%{prj.name}/ThirdParties/stb_image/**.cpp",
 		"%{prj.name}/ThirdParties/**.hpp",
 		"%{prj.name}/ThirdParties/**.inl"
 	}
@@ -58,7 +61,8 @@ project "HazelEngine"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	links

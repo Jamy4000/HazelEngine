@@ -22,6 +22,9 @@
     <Filter Include="ThirdParties\glm\glm\gtx">
       <UniqueIdentifier>{F8406D2C-E465-BCAC-0DB1-A13CF934BBCA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParties\stb_image">
+      <UniqueIdentifier>{12E55AB1-FEDE-8303-E74B-1A14D3E4E96F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
@@ -1299,6 +1302,9 @@
     <ClInclude Include="ThirdParties\glm\glm\vector_relational.hpp">
       <Filter>ThirdParties\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParties\stb_image\stb_image.h">
+      <Filter>ThirdParties\stb_image</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hazel.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -1368,6 +1374,9 @@
     <ClInclude Include="src\Hazel\Renderer\Shader.h">
       <Filter>src\Hazel\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Hazel\Renderer\Texture.h">
+      <Filter>src\Hazel\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Hazel\Renderer\VertexArray.h">
       <Filter>src\Hazel\Renderer</Filter>
     </ClInclude>
@@ -1386,6 +1395,9 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
@@ -1400,6 +1412,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ThirdParties\stb_image\stb_image.cpp">
+      <Filter>ThirdParties\stb_image</Filter>
+    </ClCompile>
     <ClCompile Include="src\Hazel\Application.cpp">
       <Filter>src\Hazel</Filter>
     </ClCompile>
@@ -1436,6 +1451,9 @@
     <ClCompile Include="src\Hazel\Renderer\Shader.cpp">
       <Filter>src\Hazel\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Hazel\Renderer\Texture.cpp">
+      <Filter>src\Hazel\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Hazel\Renderer\VertexArray.cpp">
       <Filter>src\Hazel\Renderer</Filter>
     </ClCompile>
@@ -1449,6 +1467,9 @@
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">

@@ -26,9 +26,11 @@ namespace Hazel
 			case ShaderDataType::Int3:			return sizeof(int) * 3;
 			case ShaderDataType::Int4:			return sizeof(int) * 4;
 			case ShaderDataType::Bool:			return sizeof(bool);
+			
+			case ShaderDataType::None:			HZ_CORE_FATAL("ShaderDataType::None isn't handled.");
 		}
 
-		HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
+		HZ_CORE_ASSERT(false, "Unknown ShaderDataType!")
 		return 0;
 	}
 
@@ -40,12 +42,13 @@ namespace Hazel
 		uint32_t Offset;
 		bool Normalized;
 
-		BufferElement() {}
+		BufferElement()
+			: Type(ShaderDataType::None), Size(0), Offset(0), Normalized(false) {}
 
-		BufferElement(ShaderDataType type, std::string& name, bool normalized = false)
-			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized) {}
+		BufferElement(ShaderDataType type, std::string name, bool normalized = false)
+			: Name(std::move(name)), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized) {}
 
-		uint32_t GetComponentCount() const
+		[[nodiscard]] uint32_t GetComponentCount() const
 		{
 			switch (Type)
 			{
@@ -71,9 +74,12 @@ namespace Hazel
 					return 4;
 				case ShaderDataType::Bool:
 					return 1;
+
+				case ShaderDataType::None:
+					HZ_CORE_FATAL("ShaderDataType::None isn't handled.");
 			}
 
-			HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
+			HZ_CORE_ASSERT(false, "Unknown ShaderDataType!")
 			return 0;
 		}
 	};
@@ -81,22 +87,22 @@ namespace Hazel
 	class BufferLayout
 	{
 	public:
-		BufferLayout() {}
+		BufferLayout() : m_Stride(-1) {}
 
 		BufferLayout(const std::initializer_list<BufferElement>& elements)
-			: m_Elements(elements)
+			: m_Elements(elements), m_Stride(-1)
 		{
 			CalculateOffsetAndStride();
 		}
 
-		inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
-		inline uint32_t GetStride() const { return m_Stride; }
+		[[nodiscard]] const std::vector<BufferElement>& GetElements() const { return m_Elements; }
+		[[nodiscard]] uint32_t GetStride() const { return m_Stride; }
 
-		std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
-		std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
+		std::vector<BufferElement>::iterator begin()	{ return m_Elements.begin(); }
+		std::vector<BufferElement>::iterator end()		{ return m_Elements.end(); }
 
-		std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
-		std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
+		[[nodiscard]] std::vector<BufferElement>::const_iterator begin()	const { return m_Elements.begin(); }
+		[[nodiscard]] std::vector<BufferElement>::const_iterator end()		const { return m_Elements.end(); }
 
 	private:
 		std::vector<BufferElement> m_Elements;
@@ -123,10 +129,10 @@ namespace Hazel
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		virtual const BufferLayout& GetLayout() const = 0;
+		[[nodiscard]] virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
-		static VertexBuffer* Create(float* vertices, uint32_t size);
+		static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
 	};
 
 	class IndexBuffer
@@ -137,8 +143,8 @@ namespace Hazel
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		virtual uint32_t GetCount() const = 0;
+		[[nodiscard]] virtual uint32_t GetCount() const = 0;
 
-		static IndexBuffer* Create(uint32_t* indices, uint32_t count);
+		static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);
 	};
 }
