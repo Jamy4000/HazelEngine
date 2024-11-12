@@ -28,12 +28,12 @@ namespace Hazel
 
 	void LayerStack::PopLayer(Layer* layer)
 	{
-		auto it = std::find(m_Layers.begin() + m_LayersInsertIndex, m_Layers.end(), layer);
-		if (it != m_Layers.end())
+		const auto it = std::find(m_Layers.begin() + m_LayersInsertIndex, m_Layers.end(), layer);
+		if (it != m_Layers.begin() + m_LayersInsertIndex)
 		{
+			layer->OnDetach();
 			m_Layers.erase(it);
 			m_LayersInsertIndex--;
-			layer->OnDetach();
 		}
 	}
 
