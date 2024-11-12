@@ -172,7 +172,7 @@ public:
 		)";
 		
 		// equivalent to make_unique
-		m_TextureShader.reset(Hazel::Shader::Create(textureVertexSrc, textureShaderFragmentSrc));
+		m_TextureShader.reset(Hazel::Shader::Create("assets/shaders/Texture.glsl"));
 
 		m_Texture = Hazel::Texture2D::Create("assets/textures/checkboard.jpg");
 		m_TransparentTexture = Hazel::Texture2D::Create("assets/textures/Frog_Transparent.png");
