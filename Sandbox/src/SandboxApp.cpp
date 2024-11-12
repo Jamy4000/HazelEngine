@@ -175,6 +175,7 @@ public:
 		m_TextureShader.reset(Hazel::Shader::Create(textureVertexSrc, textureShaderFragmentSrc));
 
 		m_Texture = Hazel::Texture2D::Create("assets/textures/checkboard.jpg");
+		m_TransparentTexture = Hazel::Texture2D::Create("assets/textures/Frog_Transparent.png");
 		
 		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_TextureShader)->Bind();
 		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
@@ -238,6 +239,9 @@ public:
 		m_Texture->Bind();
 		static glm::mat4 textureQuadScale = glm::scale(glm::mat4(1.0f), glm::vec3(1.5f));
 		Hazel::Renderer::Submit(m_TextureShader, m_SquareVertexArray, textureQuadScale);
+		
+		m_TransparentTexture->Bind();
+		Hazel::Renderer::Submit(m_TextureShader, m_SquareVertexArray, textureQuadScale);
 
 		// Rendering a simple Triangle
 		// Hazel::Renderer::Submit(m_Shader, m_VertexArray);
@@ -265,7 +269,7 @@ private:
 	Hazel::Ref<Hazel::Shader> m_FlatColorShader, m_TextureShader;
 	Hazel::Ref<Hazel::VertexArray> m_SquareVertexArray;
 
-	Hazel::Ref<Hazel::Texture2D> m_Texture;
+	Hazel::Ref<Hazel::Texture2D> m_Texture, m_TransparentTexture;
 	
 	Hazel::OrthographicCamera m_Camera;
 

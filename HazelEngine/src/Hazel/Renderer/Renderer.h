@@ -10,6 +10,8 @@ namespace Hazel
 	class Renderer
 	{
 	public: //static
+		static void Init();
+		
 		static void BeginScene(OrthographicCamera& camera);
 		static void EndScene();
 
