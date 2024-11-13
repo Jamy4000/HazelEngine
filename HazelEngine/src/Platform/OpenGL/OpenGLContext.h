@@ -10,12 +10,12 @@ namespace Hazel
 	{
 	public:
 		OpenGLContext(GLFWwindow* windowHandle);
+		~OpenGLContext() override = default;
 
-		virtual void Init() override;
-		virtual void SwapBuffers() override;
+		void Init() override;
+		void SwapBuffers() override;
 
 	private:
 		GLFWwindow* m_WindowHandle;
-
 	};
 }

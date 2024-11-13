@@ -22,7 +22,7 @@ namespace Hazel
 
 	WindowsWindow::WindowsWindow(const WindowProps& props) : m_Window(nullptr), m_Context(nullptr)
 	{
-		WindowsWindow::Init(props);
+		Init(props);
 	}
 
 	WindowsWindow::~WindowsWindow()
@@ -41,8 +41,8 @@ namespace Hazel
 		if (!s_GLFWInitialized)
 		{
 			// TODO: glfwTerminate on system shutdown
-			int success = glfwInit();
-			HZ_CORE_ASSERT(success, "Could not initialize GLFW!");
+			const int success = glfwInit();
+			HZ_CORE_ASSERT(success, "Could not initialize GLFW!")
 			glfwSetErrorCallback(GLFWErrorCallback);
 
 			s_GLFWInitialized = true;
@@ -58,9 +58,9 @@ namespace Hazel
 		SetVSync(true);
 
 		// Set GLFW Callbacks
-		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, const int width, const int height)
 		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 			data.Width = width;
 			data.Height = height;
 
@@ -70,15 +70,16 @@ namespace Hazel
 
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
 		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
 			WindowCloseEvent event;
 			data.EventCallback(event);
 		});
 
-		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scanCode, int action, int mods)
+		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, const int key,
+			const int scanCode, const int action, const int mods)
 		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
 			switch (action)
 			{
@@ -101,20 +102,23 @@ namespace Hazel
 					data.EventCallback(event);
 					break;
 				}
+				default:
+					break;
 			}
 		});
 
-		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode)
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, const unsigned int keycode)
 		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
-			KeyTypedEvent event(keycode);
+			KeyTypedEvent event(static_cast<int>(keycode));
 			data.EventCallback(event);
 		});
 
-		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window,
+			const int button, const int action, const int mods)
 		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
 			switch (action)
 			{
@@ -130,27 +134,29 @@ namespace Hazel
 					data.EventCallback(event);
 					break;
 				}
+				default:
+					break;
 			}
 		});
 
-		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset)
+		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, const double xOffset, const double yOffset)
 		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 			
-			MouseScrolledEvent event((float)xoffset, (float)yoffset);
+			MouseScrolledEvent event((float)xOffset, (float)yOffset);
 			data.EventCallback(event);
 		});
 
-		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPosition, double yPosition)
+		glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, const double xPosition, const double yPosition)
 		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
-			MouseMovedEvent event((float)xPosition, (float)yPosition);
+			MouseMovedEvent event(static_cast<float>(xPosition), static_cast<float>(yPosition));
 			data.EventCallback(event);
 		});
 	}
 
-	void WindowsWindow::Shutdown()
+	void WindowsWindow::Shutdown() const
 	{
 		glfwDestroyWindow(m_Window);
 		glfwTerminate();

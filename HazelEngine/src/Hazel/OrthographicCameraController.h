@@ -12,7 +12,7 @@ namespace Hazel
     class OrthographicCameraController
     {
     public:
-        OrthographicCameraController(float aspectRatio, bool rotation = false);
+        explicit OrthographicCameraController(float aspectRatio, bool rotation = false);
 
         void OnUpdate(Timestep ts);
         void OnEvent(Event& e);
@@ -21,7 +21,7 @@ namespace Hazel
         [[nodiscard]] const OrthographicCamera& GetCamera() const { return m_Camera; }
 
         [[nodiscard]] float GetZoomLevel() const { return m_ZoomLevel; }
-        void SetZoomLevel(float zoomLevel) { m_ZoomLevel = zoomLevel; }
+        void SetZoomLevel(const float zoomLevel) { m_ZoomLevel = zoomLevel; }
 
     private:
         bool OnMouseScrolled(const MouseScrolledEvent& e);

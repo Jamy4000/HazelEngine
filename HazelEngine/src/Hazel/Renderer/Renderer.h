@@ -19,7 +19,7 @@ namespace Hazel
 		static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray,
 		const glm::mat4& transform = glm::mat4(1.0f));
 
-		inline static RendererAPI::API GetAPI() { return RendererAPI::GetApi(); }
+		static RendererAPI::API GetAPI() { return RendererAPI::GetApi(); }
 
 	private:
 		struct SceneData

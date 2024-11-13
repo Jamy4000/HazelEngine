@@ -5,35 +5,32 @@
 
 namespace Hazel
 {
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	static GLenum ShaderDataTypeToOpenGLBaseType(const ShaderDataType type)
 	{
 		switch (type)
 		{
 			case ShaderDataType::Float:
-				return GL_FLOAT;
 			case ShaderDataType::Float2:
-				return GL_FLOAT;
 			case ShaderDataType::Float3:
-				return GL_FLOAT;
 			case ShaderDataType::Float4:
-				return GL_FLOAT;
 			case ShaderDataType::Mat3:
-				return GL_FLOAT;
 			case ShaderDataType::Mat4:
 				return GL_FLOAT;
+			
 			case ShaderDataType::Int:
-				return GL_INT;
 			case ShaderDataType::Int2:
-				return GL_INT;
 			case ShaderDataType::Int3:
-				return GL_INT;
 			case ShaderDataType::Int4:
 				return GL_INT;
+			
 			case ShaderDataType::Bool:
 				return GL_BOOL;
+
+			case ShaderDataType::None:
+				HZ_CORE_ASSERT(false, "None ShaderDataType!")
 		}
 
-		HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
+		HZ_CORE_ASSERT(false, "Unknown ShaderDataType!")
 		return 0;
 	}
 
@@ -68,11 +65,14 @@ namespace Hazel
 		for (const auto& element : layout)
 		{
 			glEnableVertexAttribArray(m_VertexBufferIndex);
+			
 			glVertexAttribPointer(m_VertexBufferIndex,
-				element.GetComponentCount(),
+				static_cast<int>(element.GetComponentCount()),
 				ShaderDataTypeToOpenGLBaseType(element.Type),
-				element.Normalized ? GL_TRUE : GL_FALSE, layout.GetStride(),
-				(const void*)(intptr_t)element.Offset);
+				element.Normalized ? GL_TRUE : GL_FALSE,
+				static_cast<int>(layout.GetStride()),
+				reinterpret_cast<const void*>(static_cast<intptr_t>(element.Offset)));
+			
 			m_VertexBufferIndex++;
 		}
 

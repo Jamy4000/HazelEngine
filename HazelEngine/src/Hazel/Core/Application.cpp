@@ -2,7 +2,7 @@
 #include "Application.h"
 
 #include <Hazel/Renderer/Renderer.h>
-#include "Hazel/Core.h"
+#include "Hazel/Core/Core.h"
 
 #include <GLFW/glfw3.h>
 

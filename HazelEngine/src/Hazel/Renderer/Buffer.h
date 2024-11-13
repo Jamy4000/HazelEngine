@@ -11,7 +11,7 @@ namespace Hazel
 		Bool
 	};
 
-	static uint32_t ShaderDataTypeSize(ShaderDataType type)
+	static uint32_t ShaderDataTypeSize(const ShaderDataType type)
 	{
 		switch (type)
 		{
@@ -45,7 +45,7 @@ namespace Hazel
 		BufferElement()
 			: Type(ShaderDataType::None), Size(0), Offset(0), Normalized(false) {}
 
-		BufferElement(ShaderDataType type, std::string name, bool normalized = false)
+		BufferElement(const ShaderDataType type, std::string name, const bool normalized = false)
 			: Name(std::move(name)), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized) {}
 
 		[[nodiscard]] uint32_t GetComponentCount() const

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hazel/Core.h"
+#include "Hazel/Core/Core.h"
 
 namespace Hazel
 {
@@ -46,7 +46,7 @@ namespace Hazel
 		[[nodiscard]] virtual int GetCategoryFlags() const = 0;
 		[[nodiscard]] virtual std::string ToString() const { return GetName(); }
 
-		[[nodiscard]] inline bool IsInCategory(EventCategory category) const
+		[[nodiscard]] bool IsInCategory(const EventCategory category) const
 		{
 			return GetCategoryFlags() & category;
 		}
@@ -54,10 +54,10 @@ namespace Hazel
 		bool Handled = false;
 	};
 
-	class EventDispatcher
+	class EventDispatcher final
 	{
 	public:
-		EventDispatcher(Event& event)
+		explicit EventDispatcher(Event& event)
 			: m_Event(event)
 		{}
 

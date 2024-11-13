@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hazel/Window.h"
+#include "Hazel/Core/Window.h"
 #include "Hazel/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
@@ -10,7 +10,7 @@ namespace Hazel
 	class WindowsWindow final : public Window
 	{
 	public:
-		WindowsWindow(const WindowProps& props);
+		explicit WindowsWindow(const WindowProps& props);
 		~WindowsWindow() override;
 
 		void OnUpdate() override;
@@ -27,7 +27,7 @@ namespace Hazel
 
 	private:
 		void Init(const WindowProps& props);
-		void Shutdown();
+		void Shutdown() const;
 
 		GLFWwindow* m_Window;
 		GraphicsContext* m_Context;

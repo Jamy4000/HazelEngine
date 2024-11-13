@@ -22,6 +22,7 @@ namespace Hazel
 		HZ_CORE_ASSERT(false, "Unknown Shader Type: {0}!", type)
 		return 0;
 	}
+	
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 		: m_RendererID(-1)
 	{
@@ -37,8 +38,8 @@ namespace Hazel
 		m_Name = filepath.substr(lastSlash, count);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
-		: m_RendererID(-1), m_Name(name)
+	OpenGLShader::OpenGLShader(std::string name, const std::string& vertexSrc, const std::string& fragmentSrc)
+		: m_RendererID(-1), m_Name(std::move(name))
 	{
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSrc;
@@ -61,13 +62,13 @@ namespace Hazel
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::UploadUniformInt(const std::string& name, int value) const
+	void OpenGLShader::UploadUniformInt(const std::string& name, const int value) const
 	{
 		const GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1i(location, value);
 	}
 
-	void OpenGLShader::UploadUniformFloat(const std::string& name, float value) const
+	void OpenGLShader::UploadUniformFloat(const std::string& name, const float value) const
 	{
 		const GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1f(location, value);
@@ -112,7 +113,7 @@ namespace Hazel
 			in.seekg(0, std::ios::end);
 			result.resize(in.tellg());
 			in.seekg(0, std::ios::beg);
-			in.read(&result[0], result.size());
+			in.read(&result[0],  static_cast<std::streamsize>(result.size()));
 			in.close();
 		}
 		else
@@ -127,7 +128,7 @@ namespace Hazel
 	{
 		std::unordered_map<GLenum, std::string> shaderSources;
 
-		const char* typeToken = "#type";
+		const auto typeToken = "#type";
 		const size_t typeTokenLength = strlen(typeToken);
 		size_t pos = source.find(typeToken, 0);
 		while (pos != std::string::npos)
@@ -137,7 +138,7 @@ namespace Hazel
 
 			const size_t begin = pos + typeTokenLength + 1;
 			std::string type = source.substr(begin, eol - begin);
-			HZ_CORE_ASSERT(type == "vertex" || type == "fragment" || type == "pixel", "Invalid shader type specified!");
+			HZ_CORE_ASSERT(type == "vertex" || type == "fragment" || type == "pixel", "Invalid shader type specified!")
 
 			const size_t nextLinePos = source.find_first_not_of("\r\n", eol);
 			pos = source.find(typeToken, nextLinePos);
@@ -156,13 +157,13 @@ namespace Hazel
 		std::array<GLuint, 2> glShaderIDs;
 		int glShaderIDIndex = 0;
 		
-		for (auto& kvp : shaderSources)
+		for (const auto& [fst, snd] : shaderSources)
 		{
-			const GLenum type = kvp.first;
-			const std::string& source = kvp.second;
+			const GLenum type = fst;
+			const std::string& source = snd;
 
 			// Create an empty shader handle
-			GLuint shader = glCreateShader(type);
+			const GLuint shader = glCreateShader(type);
 			
 			// Send the vertex shader source code to GL
 			// Note that std::string's .c_str is NULL character terminated.
