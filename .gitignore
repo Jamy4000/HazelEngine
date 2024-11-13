@@ -1,8 +1,13 @@
-# Directories
+# Binaries
+**/bin/
+!vendor/bin/premake/
+bin-int/
+
+# Generated Files and folder
+*.user
 .vs/
 .idea/
-/bin/
-/bin-int/
-
-# Files
-*.user
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
