@@ -1,25 +1,22 @@
 #include "hzpch.h"
 #include "Application.h"
 
-#include "Input.h"
-
 #include <Hazel/Renderer/Renderer.h>
+#include "Hazel/Core.h"
 
 #include <GLFW/glfw3.h>
 
 namespace Hazel 
 {
-#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
-
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
-		HZ_CORE_ASSERT(!s_Instance, "Application already exists!");
+		HZ_CORE_ASSERT(!s_Instance, "Application already exists!")
 		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
 		
@@ -45,7 +42,8 @@ namespace Hazel
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowCloseEvent>(HZ_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(HZ_BIND_EVENT_FN(Application::OnWindowResize));
 
 		// goes backward so that the overlaying layers are prioritize (e.g. if UI is up, we don't want to shoot a gun)
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
@@ -61,13 +59,18 @@ namespace Hazel
 		while (m_Running)
 		{
 			// Calculating Delta Time
-			float time = (float)glfwGetTime(); // TODO: Platform::GetTime();
-			Timestep timeStep = time - m_LastFrameTime;
+			const auto time = static_cast<float>(glfwGetTime()); // TODO: Platform::GetTime();
+			const Timestep timeStep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			// Updating layer stack
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate(timeStep);
+			// we only stop updating the layers when our app is minimized
+			// that way Editor ImGUI controls are still available, and we don't take any CPU time to update our layers
+			if (!m_Minimized)
+			{
+				// Updating layer stack
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate(timeStep);
+			}
 
 			// Updating ImGUI Layer
 			m_ImGuiLayer->Begin();
@@ -80,9 +83,23 @@ namespace Hazel
 		}
 	}
 
-	bool Application::OnWindowClose(WindowCloseEvent& e)
+	bool Application::OnWindowClose(const WindowCloseEvent& e)
 	{
 		m_Running = false;
 		return true;
+	}
+
+	bool Application::OnWindowResize(const WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_Minimized = true;
+			return false;
+		}
+		
+		m_Minimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+		
+		return false;
 	}
 }
