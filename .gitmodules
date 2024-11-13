@@ -1,12 +1,16 @@
 [submodule "HazelEngine/ThirdParties/spdlog"]
 	path = HazelEngine/ThirdParties/spdlog
 	url = https://github.com/gabime/spdlog
+	branch = v1.x
 [submodule "HazelEngine/ThirdParties/GLFW"]
 	path = HazelEngine/ThirdParties/GLFW
 	url = https://github.com/TheCherno/glfw
+	branch = master
 [submodule "HazelEngine/ThirdParties/imgui"]
 	path = HazelEngine/ThirdParties/imgui
 	url = https://github.com/TheCherno/imgui
+	branch = docking
 [submodule "HazelEngine/ThirdParties/glm"]
 	path = HazelEngine/ThirdParties/glm
 	url = https://github.com/g-truc/glm
+	branch = master

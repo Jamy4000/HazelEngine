@@ -130,20 +130,26 @@ namespace Hazel
 
 		const auto typeToken = "#type";
 		const size_t typeTokenLength = strlen(typeToken);
-		size_t pos = source.find(typeToken, 0);
+		size_t pos = source.find(typeToken, 0); //Start of shader type declaration line
+		
 		while (pos != std::string::npos)
 		{
-			const size_t eol = source.find_first_of("\r\n", pos);
+			const size_t eol = source.find_first_of("\r\n", pos); //End of shader type declaration line
 			HZ_CORE_ASSERT(eol != std::string::npos, "Syntax Error!")
 
-			const size_t begin = pos + typeTokenLength + 1;
+			const size_t begin = pos + typeTokenLength + 1; //Start of shader type name (after "#type " keyword)
 			std::string type = source.substr(begin, eol - begin);
 			HZ_CORE_ASSERT(type == "vertex" || type == "fragment" || type == "pixel", "Invalid shader type specified!")
 
-			const size_t nextLinePos = source.find_first_not_of("\r\n", eol);
-			pos = source.find(typeToken, nextLinePos);
-			const size_t count = pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos);
-			shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, count);
+			const size_t nextLinePos = source.find_first_not_of("\r\n", eol); //Start of shader code after shader type declaration line
+			HZ_CORE_ASSERT(nextLinePos != std::string::npos, "Syntax error")
+			
+			pos = source.find(typeToken, nextLinePos); //Start of next shader type declaration line
+			const std::string shader = pos == std::string::npos ?
+				source.substr(nextLinePos) :
+				source.substr(nextLinePos, pos - nextLinePos);
+			
+			shaderSources[ShaderTypeFromString(type)] = shader;
 		}
 
 		return shaderSources;
@@ -234,6 +240,7 @@ namespace Hazel
 		{
 			// Always detach shaders after a successful link.
 			glDetachShader(program, id);
+			glDeleteShader(id);
 		}
 		
 		m_RendererID = program;
