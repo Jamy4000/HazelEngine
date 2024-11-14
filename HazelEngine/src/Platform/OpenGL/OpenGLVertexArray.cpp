@@ -71,7 +71,7 @@ namespace Hazel
 				ShaderDataTypeToOpenGLBaseType(element.Type),
 				element.Normalized ? GL_TRUE : GL_FALSE,
 				static_cast<int>(layout.GetStride()),
-				reinterpret_cast<const void*>(static_cast<intptr_t>(element.Offset)));
+				reinterpret_cast<const void*>(element.Offset));
 			
 			m_VertexBufferIndex++;
 		}
