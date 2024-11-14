@@ -25,10 +25,9 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		Hazel::Ref<Hazel::VertexBuffer> vertexBuffer;
-		vertexBuffer = Hazel::VertexBuffer::Create(vertices, sizeof(vertices));
+		const Hazel::Ref<Hazel::VertexBuffer> vertexBuffer = Hazel::VertexBuffer::Create(vertices, sizeof(vertices));
 
-		Hazel::BufferLayout layout({
+		const Hazel::BufferLayout layout({
 			{ Hazel::ShaderDataType::Float3, "a_Position" },
 			{ Hazel::ShaderDataType::Float4, "a_Color", true }
 			});
@@ -37,8 +36,7 @@ public:
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		Hazel::Ref<Hazel::IndexBuffer> indexBuffer;
-		indexBuffer = Hazel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
+		const Hazel::Ref<Hazel::IndexBuffer> indexBuffer = Hazel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 
@@ -52,10 +50,10 @@ public:
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
 
-		Hazel::Ref<Hazel::VertexBuffer> squareVertexBuffer;
-		squareVertexBuffer = Hazel::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+		const Hazel::Ref<Hazel::VertexBuffer> squareVertexBuffer = Hazel::VertexBuffer::Create(
+			squareVertices, sizeof(squareVertices));
 
-		Hazel::BufferLayout squareLayout({
+		const Hazel::BufferLayout squareLayout({
 			{ Hazel::ShaderDataType::Float3, std::string("a_Position") },
 			{ Hazel::ShaderDataType::Float2, std::string("a_TexCoord") }
 			});
@@ -64,11 +62,11 @@ public:
 		m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		Hazel::Ref<Hazel::IndexBuffer> squareIndexBuffer;
-		squareIndexBuffer = Hazel::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		const Hazel::Ref<Hazel::IndexBuffer> squareIndexBuffer = Hazel::IndexBuffer::Create(
+			squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
 
-		std::string vertexSrc = R"(
+		const std::string vertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;
@@ -88,7 +86,7 @@ public:
 			}
 		)";
 
-		std::string fragmentSrc = R"(
+		const std::string fragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
@@ -105,7 +103,7 @@ public:
 
 		m_Shader = Hazel::Shader::Create("VertexPosColor", vertexSrc, fragmentSrc);
 
-		std::string flatColorVertexSrc = R"(
+		const std::string flatColorVertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;
@@ -122,7 +120,7 @@ public:
 			}
 		)";
 
-		std::string flatColorShaderFragmentSrc = R"(
+		const std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
@@ -140,41 +138,8 @@ public:
 		// equivalent to make_unique
 		m_FlatColorShader = Hazel::Shader::Create("FlatColor", flatColorVertexSrc, flatColorShaderFragmentSrc);
 
-		std::string textureVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			out vec2 v_TexCoord;
-		
-			void main()
-			{
-				v_TexCoord = a_TexCoord;
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-			}
-		)";
-
-		std::string textureShaderFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec2 v_TexCoord;
-
-			uniform sampler2D u_Texture;
-
-			void main()
-			{
-				color = texture(u_Texture, v_TexCoord);
-			}
-		)";
-		
 		// equivalent to make_unique
-		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
+		const auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Hazel::Texture2D::Create("assets/textures/checkboard.jpg");
 		m_TransparentTexture = Hazel::Texture2D::Create("assets/textures/Frog_Transparent.png");

@@ -15,6 +15,7 @@ namespace Hazel
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 		
+		virtual void SetInt(const char* name, int value) = 0;
 		virtual void SetFloat3(const char* str, glm::vec3 vec) = 0;
 		virtual void SetFloat4(const char* str, glm::vec4 vec) = 0;
 		virtual void SetMat4(const char* str, glm::mat4 mat) = 0;
