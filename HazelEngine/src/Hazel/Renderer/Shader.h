@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
+
+#include "glm/glm.hpp"
 
 namespace Hazel
 {
@@ -11,6 +14,10 @@ namespace Hazel
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
+		
+		virtual void SetFloat3(const char* str, glm::vec3 vec) = 0;
+		virtual void SetFloat4(const char* str, glm::vec4 vec) = 0;
+		virtual void SetMat4(const char* str, glm::mat4 mat) = 0;
 
 		[[nodiscard]] virtual const std::string& GetName() const = 0;
 

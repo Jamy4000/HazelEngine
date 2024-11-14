@@ -19,6 +19,10 @@ namespace Hazel
         void Bind() const override;
         void Unbind() const override;
         
+        void SetFloat3(const char* name, glm::vec3 vec) override;
+        void SetFloat4(const char* name, glm::vec4 vec) override;
+        void SetMat4(const char* name, glm::mat4 mat) override;
+        
 		[[nodiscard]] const std::string& GetName() const override { return m_Name; }
 
         void UploadUniformInt(const std::string& name, int value) const;
