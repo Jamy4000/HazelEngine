@@ -1,10 +1,10 @@
 ﻿#include "hzpch.h"
-#include "Texture.h"
+#include "Hazel/Renderer/Texture.h"
+
+#include "Hazel/Renderer/Renderer.h"
+#include "Platform/OpenGL/OpenGLTexture.h"
 
 #include <memory>
-
-#include "Renderer.h"
-#include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace Hazel
 {
@@ -17,7 +17,7 @@ namespace Hazel
             return nullptr;
 
         case RendererAPI::API::OpenGL:
-            return std::make_shared<OpenGLTexture2D>(path);
+            return CreateRef<OpenGLTexture2D>(path);
         }
 
         HZ_CORE_ASSERT(false, "Unknown RendererAPI!")

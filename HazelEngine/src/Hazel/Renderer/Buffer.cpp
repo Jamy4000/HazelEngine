@@ -1,7 +1,7 @@
 #include "hzpch.h"
-#include "Buffer.h"
+#include "Hazel/Renderer/Buffer.h"
 
-#include "Renderer.h"
+#include "Hazel/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLBuffer.h"
 
@@ -16,7 +16,7 @@ namespace Hazel
 				return nullptr;
 
 		case RendererAPI::API::OpenGL:
-				return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+				return CreateRef<OpenGLVertexBuffer>(vertices, size);
 		}
 
 		HZ_CORE_ASSERT(false, "Unknown RendererAPI!")
@@ -32,7 +32,7 @@ namespace Hazel
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return std::make_shared<OpenGLIndexBuffer>(indices, count);
+				return CreateRef<OpenGLIndexBuffer>(indices, count);
 		}
 
 		HZ_CORE_ASSERT(false, "Unknown RendererAPI!")

@@ -1,14 +1,14 @@
 #pragma once
 #include "hzpch.h"
 
-#include "Layer.h"
+#include "Hazel/Core/Layer.h"
 
 namespace Hazel
 {
 	class LayerStack final
 	{
 	public:
-		LayerStack();
+		LayerStack() = default;
 		~LayerStack();
 
 		void PushLayer(Layer* layer);
