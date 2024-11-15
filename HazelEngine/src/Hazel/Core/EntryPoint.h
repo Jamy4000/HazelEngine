@@ -8,9 +8,18 @@ extern Hazel::Application* Hazel::CreateApplication();
 inline int main(int argc, char** argv)
 {
 	Hazel::Log::Init();
+
+	HZ_PROFILE_BEGIN_SESSION("Startup", "HazelProfile_Startup.json")
 	const auto app = Hazel::CreateApplication();
+	HZ_PROFILE_END_SESSION()
+
+	HZ_PROFILE_BEGIN_SESSION("Startup", "HazelProfile_Runtime.json")
 	app->Run();
+	HZ_PROFILE_END_SESSION()
+	
+	HZ_PROFILE_BEGIN_SESSION("Startup", "HazelProfile_Shutdown.json")
 	delete app;
+	HZ_PROFILE_END_SESSION()
 }
 
 #endif

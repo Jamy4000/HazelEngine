@@ -26,6 +26,8 @@ namespace Hazel
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 		: m_RendererID(-1)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		const std::string source = ReadFile(filepath);
 		const auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -41,6 +43,8 @@ namespace Hazel
 	OpenGLShader::OpenGLShader(std::string name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		: m_RendererID(-1), m_Name(std::move(name))
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSrc;
 		shaderSources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -49,36 +53,50 @@ namespace Hazel
 
 	OpenGLShader::~OpenGLShader()
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		glDeleteProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Bind() const
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Unbind() const
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetInt(const char* name, const int value)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		UploadUniformInt(name, value);
 	}
 
 	void OpenGLShader::SetFloat3(const char* name, const glm::vec3 vec)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		UploadUniformFloat3(name, vec);
 	}
 
 	void OpenGLShader::SetFloat4(const char* name, const glm::vec4 vec)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		UploadUniformFloat4(name, vec);
 	}
 
 	void OpenGLShader::SetMat4(const char* name, const glm::mat4 mat)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		UploadUniformMat4(name, mat);
 	}
 
@@ -120,12 +138,16 @@ namespace Hazel
 
 	void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix) const
 	{
+		// TODO glGetUniformLocation in this specific method is extremely slow, we may wanna cache it or find a better way
+		// https://android-developers.googleblog.com/2015/04/game-performance-explicit-uniform.html
 		const GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		std::string result;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in)
@@ -154,6 +176,8 @@ namespace Hazel
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const auto typeToken = "#type";
@@ -185,6 +209,8 @@ namespace Hazel
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		const GLuint program = glCreateProgram();
 		HZ_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders per file for now!")
 		

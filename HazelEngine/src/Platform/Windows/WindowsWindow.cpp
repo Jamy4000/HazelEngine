@@ -22,16 +22,22 @@ namespace Hazel
 
 	WindowsWindow::WindowsWindow(const WindowProps& props) : m_Window(nullptr), m_Context(nullptr)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		Init(props);
 	}
 
 	WindowsWindow::~WindowsWindow()
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		Shutdown();
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
@@ -40,15 +46,18 @@ namespace Hazel
 
 		if (s_GLFWWindowCount == 0)
 		{
+			HZ_PROFILE_SCOPE("glfwInit")
 			const int success = glfwInit();
 			HZ_CORE_ASSERT(success, "Could not initialize GLFW!")
 			glfwSetErrorCallback(GLFWErrorCallback);
 		}
 
-		m_Window = glfwCreateWindow(static_cast<int>(props.Width), static_cast<int>(props.Height),
-			props.Title.c_str(), nullptr, nullptr);
-
-		++s_GLFWWindowCount;
+		{
+			HZ_PROFILE_SCOPE("glfwCreateWindow")
+			m_Window = glfwCreateWindow(static_cast<int>(props.Width), static_cast<int>(props.Height),
+				props.Title.c_str(), nullptr, nullptr);
+			++s_GLFWWindowCount;
+		}
 
 		m_Context = GraphicsContext::Create(m_Window);
 		m_Context->Init();
@@ -157,6 +166,8 @@ namespace Hazel
 
 	void WindowsWindow::Shutdown() const
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		glfwDestroyWindow(m_Window);
 		
 		--s_GLFWWindowCount;
@@ -168,12 +179,16 @@ namespace Hazel
 
 	void WindowsWindow::OnUpdate()
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
 
-	void WindowsWindow::SetVSync(bool enabled)
+	void WindowsWindow::SetVSync(const bool enabled)
 	{
+		HZ_PROFILE_FUNCTION()
+		
 		if (enabled)
 			glfwSwapInterval(1);
 		else
