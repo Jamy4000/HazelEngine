@@ -7,6 +7,8 @@
 
 #include "Hazel/ImGui/ImGuiLayer.h"
 
+int main(int argc, char** argv);
+
 namespace Hazel
 {
 	class Application
@@ -14,8 +16,6 @@ namespace Hazel
 	public:
 		Application();
 		virtual ~Application();
-
-		void Run();
 
 		void OnEvent(Event& e);
 
@@ -27,6 +27,7 @@ namespace Hazel
 		[[nodiscard]] Window& GetWindow() const { return *m_Window; }
 		
 	private:
+		void Run();
 		bool OnWindowClose(const WindowCloseEvent& e);
 		bool OnWindowResize(const WindowResizeEvent& e);
 
@@ -42,6 +43,7 @@ namespace Hazel
 
 	private: // static
 		static Application* s_Instance;
+		friend int ::main(int argc, char** argv);
 	};
 
 	// To be defined in the client
