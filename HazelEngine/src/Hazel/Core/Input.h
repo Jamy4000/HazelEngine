@@ -41,12 +41,15 @@ namespace Hazel
 		{
 			return s_Instance->GetMouseYImpl();
 		}
+		
+		static Scope<Input> Create();
 
 	protected:
 		virtual bool IsKeyPressedImpl(KeyCode keycode) = 0;
-
 		virtual bool IsMouseButtonPressedImpl(MouseCode button) = 0;
+		
 		virtual std::pair<float, float> GetMousePositionImpl() = 0;
+		
 		virtual float GetMouseXImpl() = 0;
 		virtual float GetMouseYImpl() = 0;
 
