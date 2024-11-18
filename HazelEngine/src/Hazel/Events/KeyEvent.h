@@ -1,27 +1,28 @@
 #pragma once
 
 #include "Hazel/Events/Event.h"
+#include "Hazel/Core/Input.h"
 
 namespace Hazel
 {
 	class KeyEvent : public Event
 	{
 	public:
-		[[nodiscard]] int GetKeyCode() const { return m_KeyCode; }
+		[[nodiscard]] KeyCode GetKeyCode() const { return m_KeyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
-		explicit KeyEvent(const int keycode)
+		explicit KeyEvent(const KeyCode keycode)
 			: m_KeyCode(keycode)
 		{}
 
-		int m_KeyCode;
+		KeyCode m_KeyCode;
 	};
 
 	class KeyPressedEvent final : public KeyEvent
 	{
 	public:
-		KeyPressedEvent(const int keycode, const int repeatCount)
+		KeyPressedEvent(const KeyCode keycode, const int repeatCount)
 			: KeyEvent(keycode), m_RepeatCount(repeatCount)
 		{}
 
@@ -42,7 +43,7 @@ namespace Hazel
 	class KeyReleasedEvent final : public KeyEvent
 	{
 	public:
-		explicit KeyReleasedEvent(const int keycode)
+		explicit KeyReleasedEvent(const KeyCode keycode)
 			: KeyEvent(keycode)
 		{}
 
@@ -59,7 +60,7 @@ namespace Hazel
 	class KeyTypedEvent final : public KeyEvent
 	{
 	public:
-		explicit KeyTypedEvent(const int keycode)
+		explicit KeyTypedEvent(const KeyCode keycode)
 			: KeyEvent(keycode)
 		{}
 

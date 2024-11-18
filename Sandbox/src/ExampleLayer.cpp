@@ -140,11 +140,17 @@ ExampleLayer::ExampleLayer()
 	textureShader->SetInt("u_Texture", 0);
 }
 
+
+void ExampleLayer::OnAttach()
+{
+}
+
+void ExampleLayer::OnDetach()
+{
+}
+
 void ExampleLayer::OnUpdate(Hazel::Timestep ts)
 {
-	
-	//HZ_TRACE("DeltaTime: {0}s, {1}ms", ts.GetSeconds(), ts.GetMilliseconds());
-
 	m_CameraController.OnUpdate(ts);
 	
 	Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 0.1f });
