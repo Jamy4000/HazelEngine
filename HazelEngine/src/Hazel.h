@@ -14,7 +14,7 @@
 #include "Hazel/Core/Input.h"
 #include "Hazel/Core/KeyCodes.h"
 #include "Hazel/Core/MouseCodes.h"
-#include "Hazel/OrthographicCameraController.h"
+#include "Hazel/Utils/OrthographicCameraController.h"
 // ---------------------------------
 
 

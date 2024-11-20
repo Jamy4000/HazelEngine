@@ -2,6 +2,8 @@
 
 #include <Hazel.h>
 
+#include "ParticleSystem.h"
+
 class Sandbox2D : public Hazel::Layer
 {
 public:
@@ -27,4 +29,9 @@ private:
 	Hazel::Ref<Hazel::Texture2D> m_CheckerboardTexture;
 	
 	glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 0.9f };
+
+	ParticleProps m_Particle;
+	ParticleSystem m_ParticleSystem;
+
+	float m_LastFrameDelta;
 };

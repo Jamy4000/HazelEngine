@@ -333,7 +333,7 @@ namespace Hazel
         const auto unitMatrix = glm::mat4(1.0f); 
         constexpr auto rotationAxis = glm::vec3(0.0f, 0.0f, 1.0f); 
         const glm::mat4 transform = glm::translate(unitMatrix, position)
-            * glm::rotate(unitMatrix, glm::radians(rotation), rotationAxis)
+            * glm::rotate(unitMatrix, rotation, rotationAxis)
             * glm::scale(unitMatrix, { size.x, size.y, 1.0f });
 
         constexpr size_t quadVertexCount = 4;

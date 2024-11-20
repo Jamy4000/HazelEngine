@@ -4,6 +4,15 @@
 
 namespace Hazel
 {
+	struct OrthographicCameraBounds
+	{
+		float Left, Right;
+		float Bottom, Top;
+
+		[[nodiscard]] float GetWidth() const { return Right - Left; }
+		[[nodiscard]] float GetHeight() const { return Top - Bottom; }
+	};
+    
 	class OrthographicCamera
 	{
 	public:
@@ -28,6 +37,7 @@ namespace Hazel
 		[[nodiscard]] const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		[[nodiscard]] const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
 		[[nodiscard]] const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; }
+		[[nodiscard]] const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
 
 	private:
 		void RecalculateViewMatrix();
@@ -36,6 +46,7 @@ namespace Hazel
 		glm::mat4 m_ProjectionMatrix;
 		glm::mat4 m_ViewMatrix;
 		glm::mat4 m_ViewProjectionMatrix;
+		OrthographicCameraBounds m_Bounds;
 
 		glm::vec3 m_Position;
 		float m_Rotation = 0.0f;

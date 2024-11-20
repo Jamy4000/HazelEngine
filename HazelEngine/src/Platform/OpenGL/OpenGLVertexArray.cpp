@@ -27,7 +27,7 @@ namespace Hazel
 				return GL_BOOL;
 
 			case ShaderDataType::None:
-				HZ_CORE_ASSERT(false, "None ShaderDataType!")
+				HZ_CORE_ASSERT(false, "None ShaderDataType!");
 		}
 
 		HZ_CORE_ASSERT(false, "Unknown ShaderDataType!")
