@@ -16,6 +16,7 @@ namespace Hazel
 		virtual void Unbind() const = 0;
 		
 		virtual void SetInt(const char* name, int value) = 0;
+		virtual void SetIntArray(const char* name, int* values, uint32_t count) = 0;
 		virtual void SetFloat(const char* str, float value) = 0;
 		virtual void SetFloat2(const char* str, glm::vec2 value) = 0;
 		virtual void SetFloat3(const char* str, glm::vec3 value) = 0;

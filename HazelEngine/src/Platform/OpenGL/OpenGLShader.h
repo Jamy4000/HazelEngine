@@ -20,6 +20,7 @@ namespace Hazel
         void Unbind() const override;
         
         void SetInt(const char* name, int value) override;
+        void SetIntArray(const char* name, int* values, uint32_t count) override;
         void SetFloat(const char* name, float value) override;
         void SetFloat2(const char* name, glm::vec2 value) override;
         void SetFloat3(const char* name, glm::vec3 value) override;
@@ -29,6 +30,7 @@ namespace Hazel
 		[[nodiscard]] const std::string& GetName() const override { return m_Name; }
 
         void UploadUniformInt(const std::string& name, int value) const;
+        void UploadUniformIntArray(const std::string& name, const int* values, uint32_t count) const;
 
         void UploadUniformFloat(const std::string& name, float value) const;
         void UploadUniformFloat2(const std::string& name, const glm::vec2& value) const;
