@@ -220,6 +220,9 @@ namespace Hazel
         // If the texture wasn't added to the texture slots yet
         if (textureIndex == 0.0f)
         {
+            if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
+                FlushAndReset();
+            
             textureIndex = static_cast<float>(s_Data.TextureSlotIndex);
             s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
             s_Data.TextureSlotIndex++;
@@ -314,6 +317,9 @@ namespace Hazel
         // If the texture wasn't added to the texture slots yet
         if (textureIndex == 0.0f)
         {
+            if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
+                FlushAndReset();
+            
             textureIndex = static_cast<float>(s_Data.TextureSlotIndex);
             s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
             s_Data.TextureSlotIndex++;
