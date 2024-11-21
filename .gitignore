@@ -14,3 +14,4 @@ bin-int/
 
 # Hazel files
 *.log
+HazelProfile_*.json
