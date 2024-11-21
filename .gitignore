@@ -11,7 +11,7 @@ bin-int/
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
-imgui*.ini
+**/imgui.ini
 
 # Hazel files
 *.log
