@@ -5,5 +5,5 @@
 #include <glad/glad.h>
 
 #include <imgui.h>
-#include <backends/imgui_impl_glfw.cpp>
-#include <backends/imgui_impl_opengl3.cpp>6
+#include <examples/imgui_impl_glfw.cpp>
+#include <examples/imgui_impl_opengl3.cpp>
