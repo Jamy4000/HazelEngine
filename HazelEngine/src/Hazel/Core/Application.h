@@ -22,6 +22,8 @@ namespace Hazel
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
+		void Close();
+		
 		[[nodiscard]] static Application& Get() { return *s_Instance; }
 
 		[[nodiscard]] Window& GetWindow() const { return *m_Window; }

@@ -27,13 +27,6 @@ private:
 	Hazel::Ref<Hazel::Shader> m_FlatColorShader;
 
 	Hazel::Ref<Hazel::Texture2D> m_CheckerboardTexture;
-	Hazel::Ref<Hazel::Texture2D> m_SpriteSheet;
-	Hazel::Ref<Hazel::SubTexture2D> m_StairsSprite, m_BarrelSprite, m_TreeSprite;
 	
 	glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 0.9f };
-
-	ParticleProps m_Particle;
-	ParticleSystem m_ParticleSystem;
-
-	float m_LastFrameDelta;
 };
