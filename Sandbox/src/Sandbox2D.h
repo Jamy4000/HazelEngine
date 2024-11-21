@@ -25,6 +25,7 @@ private:
 	// TEMP
 	Hazel::Ref<Hazel::VertexArray> m_SquareVertexArray;
 	Hazel::Ref<Hazel::Shader> m_FlatColorShader;
+	Hazel::Ref<Hazel::FrameBuffer> m_FrameBuffer;
 
 	Hazel::Ref<Hazel::Texture2D> m_CheckerboardTexture;
 	

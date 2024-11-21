@@ -17,6 +17,12 @@ void Sandbox2D::OnAttach()
 	
 	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/sandbox/textures/checkboard.jpg");
 
+
+	Hazel::FrameBufferSpecification frameBufferSpecification;
+	frameBufferSpecification.Width = 1280;
+	frameBufferSpecification.Height = 720;
+	m_FrameBuffer = Hazel::FrameBuffer::Create(frameBufferSpecification);
+	
 	m_CameraController.SetZoomLevel(7.5f);
 }
 
@@ -36,6 +42,7 @@ void Sandbox2D::OnUpdate(const Hazel::Timestep ts)
 	Hazel::Renderer2D::ResetStats();
 	{
 		HZ_PROFILE_SCOPE("Renderer Prep")
+		m_FrameBuffer->Bind();
 		Hazel::RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
 		Hazel::RenderCommand::Clear();
 	}
@@ -78,6 +85,7 @@ void Sandbox2D::OnUpdate(const Hazel::Timestep ts)
 			}
 		}
 		Hazel::Renderer2D::EndScene();
+		m_FrameBuffer->Unbind();
 	}
 }
 
@@ -164,6 +172,8 @@ void Sandbox2D::OnImGuiRender()
 
 		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
+		const uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+		ImGui::Image((void*)textureID, ImVec2{ 1280.0f, 720.0f });
 		ImGui::End();
 
 	    ImGui::End();
