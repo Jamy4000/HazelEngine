@@ -73,6 +73,12 @@ namespace Hazel
         dispatcher.Dispatch<WindowResizeEvent>(HZ_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
     }
 
+    void OrthographicCameraController::OnResize(float width, float height)
+    {
+        m_AspectRatio = static_cast<float>(width) / static_cast<float>(height);
+        CalculateView();
+    }
+
     void OrthographicCameraController::SetZoomLevel(const float zoomLevel)
     {
         m_ZoomLevel = zoomLevel;
@@ -98,8 +104,7 @@ namespace Hazel
     {
 		HZ_PROFILE_FUNCTION()
 		
-        m_AspectRatio = static_cast<float>(e.GetWidth()) / static_cast<float>(e.GetHeight());
-        CalculateView();
+        OnResize(static_cast<float>(e.GetWidth()), static_cast<float>(e.GetHeight()));
         return false;
     }
 }

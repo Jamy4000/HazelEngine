@@ -1,4 +1,4 @@
-#include "HazelnutLayer.h"
+#include "EditorLayer.h"
 
 #include <imgui/imgui.h>
 
@@ -7,13 +7,13 @@
 
 namespace Hazel
 {
-	HazelnutLayer::HazelnutLayer() : Layer("HazelnutLayer"),
+	EditorLayer::EditorLayer() : Layer("Editor"),
 			m_CameraController(1280.0f / 720.0f),
 			m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
 	{
 	}
 
-	void HazelnutLayer::OnAttach()
+	void EditorLayer::OnAttach()
 	{
 		HZ_PROFILE_FUNCTION()
 		
@@ -28,12 +28,12 @@ namespace Hazel
 		m_CameraController.SetZoomLevel(7.5f);
 	}
 
-	void HazelnutLayer::OnDetach()
+	void EditorLayer::OnDetach()
 	{
 		HZ_PROFILE_FUNCTION()
 	}
 
-	void HazelnutLayer::OnUpdate(const Timestep ts)
+	void EditorLayer::OnUpdate(const Timestep ts)
 	{
 		HZ_PROFILE_FUNCTION()
 		
@@ -91,7 +91,7 @@ namespace Hazel
 		}
 	}
 
-	void HazelnutLayer::OnImGuiRender()
+	void EditorLayer::OnImGuiRender()
 	{
 		HZ_PROFILE_FUNCTION()
 
@@ -159,7 +159,10 @@ namespace Hazel
 
 		        ImGui::EndMenuBar();
 		    }
-		
+		}
+
+		// Setting Window
+		{
 			ImGui::Begin("Settings");
 
 			const auto stats = Renderer2D::GetStats();
@@ -171,16 +174,39 @@ namespace Hazel
 			ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
 			ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+			
+			ImGui::End();
+		}
+
+		// Starting Viewport
+		{
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+			
+			ImGui::Begin("Viewport");
+
+			// Checking Viewport Resizing
+			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+			if (m_ViewportSize != *reinterpret_cast<glm::vec2*>(&viewportPanelSize))
+			{
+				m_ViewportSize = glm::vec2(viewportPanelSize.x, viewportPanelSize.y);
+				m_FrameBuffer->Resize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
+
+				m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
+			}
 
 			const uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
-			ImGui::Image((void*)textureID, ImVec2{ 1280.0f, 720.0f }, ImVec2{ 0.0f, 1.0f}, ImVec2{ 1.0f, 0.0f });
-			ImGui::End();
+			ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y },
+				ImVec2{ 0.0f, 1.0f}, ImVec2{ 1.0f, 0.0f });
 
-		    ImGui::End();
+			ImGui::End();
+			ImGui::PopStyleVar();
 		}
+
+		// Ending Dockspace
+	    ImGui::End();
 	}
 
-	void HazelnutLayer::OnEvent(Event& e)
+	void EditorLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
 	}

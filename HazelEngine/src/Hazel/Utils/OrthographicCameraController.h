@@ -17,6 +17,8 @@ namespace Hazel
         void OnUpdate(Timestep ts);
         void OnEvent(Event& e);
         
+        void OnResize(float width, float height);
+        
         [[nodiscard]] OrthographicCamera& GetCamera() { return m_Camera; }
         [[nodiscard]] const OrthographicCamera& GetCamera() const { return m_Camera; }
 

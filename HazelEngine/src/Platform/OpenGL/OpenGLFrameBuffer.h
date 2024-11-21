@@ -14,6 +14,8 @@ namespace Hazel
 
         void Bind() override;
         void Unbind() override;
+
+        void Resize(uint32_t width, uint32_t height) override;
         
         [[nodiscard]] uint32_t GetColorAttachmentRendererID() const override { return m_ColorAttachments; }
         

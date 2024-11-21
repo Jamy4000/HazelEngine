@@ -1,7 +1,7 @@
 #include <Hazel.h>
 #include <Hazel/Core/EntryPoint.h>
 
-#include "HazelnutLayer.h" 
+#include "EditorLayer.h" 
 
 namespace Hazel
 {
@@ -10,7 +10,7 @@ namespace Hazel
 	public:
 		HazelnutApp() : Application("Hazelnut - Hazel Editor")
 		{
-			PushLayer(new HazelnutLayer());
+			PushLayer(new EditorLayer());
 		}
 
 		~HazelnutApp() override = default;

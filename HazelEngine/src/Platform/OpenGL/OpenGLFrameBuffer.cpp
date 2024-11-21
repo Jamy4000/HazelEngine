@@ -6,7 +6,7 @@
 namespace Hazel
 {
     OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferSpecification& specifications) :
-        m_RendererID(-1), m_ColorAttachments(-1), m_Specification(specifications)
+        m_RendererID(0), m_ColorAttachments(0), m_Specification(specifications)
     {
         Invalidate();
     }
@@ -14,10 +14,19 @@ namespace Hazel
     OpenGLFrameBuffer::~OpenGLFrameBuffer()
     {
         glDeleteFramebuffers(1, &m_RendererID);
+        glDeleteTextures(1, &m_ColorAttachments);
+        glDeleteTextures(1, &m_DepthAttachment);
     }
 
     void OpenGLFrameBuffer::Invalidate()
     {
+        if (m_RendererID)
+        {
+            glDeleteFramebuffers(1, &m_RendererID);
+            glDeleteTextures(1, &m_ColorAttachments);
+            glDeleteTextures(1, &m_DepthAttachment);
+        }
+        
         glCreateFramebuffers(1, &m_RendererID);
         glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 
@@ -37,11 +46,6 @@ namespace Hazel
         glBindTexture(GL_TEXTURE_2D, m_DepthAttachment);
         glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, static_cast<GLsizei>(m_Specification.Width),
             static_cast<GLsizei>(m_Specification.Height));
-        /*
-         *Same as line above
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, static_cast<GLsizei>(m_Specification.Width),
-            static_cast<GLsizei>(m_Specification.Height), 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, nullptr);
-        */
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_DepthAttachment, 0);
 
         HZ_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebugger is incomplete");
@@ -53,10 +57,18 @@ namespace Hazel
     void OpenGLFrameBuffer::Bind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+        glViewport(0, 0, static_cast<int>(m_Specification.Width), static_cast<int>(m_Specification.Height));
     }
 
     void OpenGLFrameBuffer::Unbind()
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height)
+    {
+        m_Specification.Width = width;
+        m_Specification.Height = height;
+        Invalidate();
     }
 }
