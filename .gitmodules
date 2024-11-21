@@ -6,10 +6,6 @@
 	path = HazelEngine/ThirdParties/GLFW
 	url = https://github.com/TheCherno/glfw
 	branch = master
-[submodule "HazelEngine/ThirdParties/imgui"]
-	path = HazelEngine/ThirdParties/imgui
-	url = https://github.com/TheCherno/imgui
-	branch = docking
 [submodule "HazelEngine/ThirdParties/glm"]
 	path = HazelEngine/ThirdParties/glm
 	url = https://github.com/g-truc/glm
