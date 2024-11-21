@@ -1,6 +1,9 @@
 #pragma once
+
 #include "Hazel/Renderer/OrthographicCamera.h"
+
 #include "Hazel/Renderer/Texture.h"
+#include "Hazel/Renderer/SubTexture2D.h"
 
 namespace Hazel
 {
@@ -21,6 +24,10 @@ namespace Hazel
             float tillingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
         static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, 
             float tillingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+        static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, 
+            float tillingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+        static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture, 
+            float tillingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
 
         // Rotation is in radians
         static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color);
@@ -29,6 +36,10 @@ namespace Hazel
             const Ref<Texture2D>& texture, float tillingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
         static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation,
             const Ref<Texture2D>& texture, float tillingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+        static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation,
+            const Ref<SubTexture2D>& subTexture, float tillingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
+        static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation,
+            const Ref<SubTexture2D>& subTexture, float tillingFactor = 1.0f, const glm::vec4& tintColor = glm::vec4(1.0f));
 
         // Stats
         struct Statistics

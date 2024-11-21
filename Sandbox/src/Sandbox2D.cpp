@@ -15,12 +15,22 @@ void Sandbox2D::OnAttach()
 {
 	HZ_PROFILE_FUNCTION()
 	
-	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/textures/checkboard.jpg");
+	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/sandbox/textures/checkboard.jpg");
+	m_SpriteSheet = Hazel::Texture2D::Create("assets/game/textures/RPGpack_sheet_2X.png");
+
+	m_StairsSprite = Hazel::SubTexture2D::CreateFromCoordinates(m_SpriteSheet, {7.0f, 6.0f},
+		{128.0f, 128.0f});
+	m_BarrelSprite = Hazel::SubTexture2D::CreateFromCoordinates(m_SpriteSheet, {9.0f, 9.0f},
+		{128.0f, 128.0f});
+	m_TreeSprite = Hazel::SubTexture2D::CreateFromCoordinates(m_SpriteSheet, {2.0f, 1.0f},
+		{128.0f, 128.0f}, {1.0f, 2.0f});
 	
 	// Init Particle
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
-	m_Particle.SizeBegin = 0.5f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 0.0f;
+	m_Particle.SizeBegin = 0.5f;
+	m_Particle.SizeVariation = 0.3f;
+	m_Particle.SizeEnd = 0.0f;
 	m_Particle.MinLifeTime = 1.0f;
 	m_Particle.Velocity = { 0.0f, 0.0f };
 	m_Particle.VelocityVariation = { 3.0f, 1.0f };
@@ -50,6 +60,7 @@ void Sandbox2D::OnUpdate(const Hazel::Timestep ts)
 	}
 
 	// Drawing
+	/*
 	{
 		HZ_PROFILE_SCOPE("Drawing Scene")
 
@@ -88,6 +99,7 @@ void Sandbox2D::OnUpdate(const Hazel::Timestep ts)
 		}
 		Hazel::Renderer2D::EndScene();
 	}
+	*/
 
 	{
 		// Created a Particle effect on Mouse click
@@ -108,6 +120,22 @@ void Sandbox2D::OnUpdate(const Hazel::Timestep ts)
 
 		m_ParticleSystem.OnUpdate(ts);
 		m_ParticleSystem.OnRender(m_CameraController.GetCamera());
+
+		{
+			// Rendering test game scene
+			Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+			Hazel::Renderer2D::DrawQuad({0.0f, 0.0f, 0.5}, {1.0f, 1.0f},
+				m_StairsSprite, 1.0f);
+		
+			Hazel::Renderer2D::DrawQuad({1.5f, 0.0f, 0.5}, {1.0f, 1.0f},
+				m_BarrelSprite, 1.0f);
+		
+			Hazel::Renderer2D::DrawQuad({-1.5f, 0.0f, 0.5}, {1.0f, 2.0f},
+				m_TreeSprite, 1.0f);
+		
+			Hazel::Renderer2D::EndScene();
+		}
 	}
 }
 
