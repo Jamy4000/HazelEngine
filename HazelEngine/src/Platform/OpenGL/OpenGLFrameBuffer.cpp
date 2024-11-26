@@ -5,8 +5,10 @@
 
 namespace Hazel
 {
+    static const uint32_t s_MaxFrameBufferSize = 8192;
+    
     OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferSpecification& specifications) :
-        m_RendererID(0), m_ColorAttachments(0), m_Specification(specifications)
+        m_RendererID(0), m_ColorAttachments(0), m_DepthAttachment(0), m_Specification(specifications)
     {
         Invalidate();
     }
@@ -48,7 +50,7 @@ namespace Hazel
             static_cast<GLsizei>(m_Specification.Height));
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_DepthAttachment, 0);
 
-        HZ_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebugger is incomplete");
+        HZ_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebugger is incomplete")
         
         // Unbinding
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -65,8 +67,14 @@ namespace Hazel
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height)
+    void OpenGLFrameBuffer::Resize(const uint32_t width, const uint32_t height)
     {
+        if (width == 0 || height == 0 || width > s_MaxFrameBufferSize || height > s_MaxFrameBufferSize)
+        {
+            HZ_CORE_WARN("Attempted to resize Framebuffer to {0}, {1}.", width, height);
+            return;
+        }
+        
         m_Specification.Width = width;
         m_Specification.Height = height;
         Invalidate();

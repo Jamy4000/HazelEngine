@@ -36,6 +36,16 @@ namespace Hazel
 	void EditorLayer::OnUpdate(const Timestep ts)
 	{
 		HZ_PROFILE_FUNCTION()
+
+		const FrameBufferSpecification spec = m_FrameBuffer->GetSpecifications();
+		const auto width = static_cast<uint32_t>(m_ViewportSize.x);
+		const auto height = static_cast<uint32_t>(m_ViewportSize.y);
+		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
+			(spec.Width != width || spec.Height != height))
+		{
+			m_FrameBuffer->Resize(width, height);
+			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+		}
 		
 		// Update
 		if (m_ViewportFocused)
@@ -136,10 +146,9 @@ namespace Hazel
 		        ImGui::PopStyleVar(2);
 
 		    // DockSpace
-		    ImGuiIO& io = ImGui::GetIO();
-		    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+		    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		    {
-		        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+			    const ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 		        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		    }
 
@@ -190,14 +199,8 @@ namespace Hazel
 			Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
 
 			// Checking Viewport Resizing
-			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-			if (m_ViewportSize != *reinterpret_cast<glm::vec2*>(&viewportPanelSize))
-			{
-				m_ViewportSize = glm::vec2(viewportPanelSize.x, viewportPanelSize.y);
-				m_FrameBuffer->Resize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y));
-
-				m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
-			}
+			const ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+			m_ViewportSize = glm::vec2(viewportPanelSize.x, viewportPanelSize.y);
 
 			const uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
 			ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y },
