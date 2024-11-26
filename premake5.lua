@@ -23,6 +23,7 @@ IncludeDir["Glad"] = "HazelEngine/ThirdParties/Glad/include"
 IncludeDir["ImGui"] = "HazelEngine/ThirdParties/imgui"
 IncludeDir["glm"] = "HazelEngine/ThirdParties/glm"
 IncludeDir["stb_image"] = "HazelEngine/ThirdParties/stb_image"
+IncludeDir["entt"] = "HazelEngine/ThirdParties/entt/include"
 
 group "Dependencies"
 	include "HazelEngine/ThirdParties/GLFW"
@@ -68,7 +69,8 @@ project "HazelEngine"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -113,7 +115,7 @@ project "HazelEngine"
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 	
 		files 
-		{ 
+		{
 			"%{prj.name}/src/**.h",
 			"%{prj.name}/src/**.cpp"
 		}
@@ -123,7 +125,8 @@ project "HazelEngine"
 			"HazelEngine/ThirdParties/spdlog/include",
 			"HazelEngine/src",
 			"HazelEngine/ThirdParties",
-			"%{IncludeDir.glm}"
+			"%{IncludeDir.glm}",
+			"%{IncludeDir.entt}"
 		}
 	
 		links

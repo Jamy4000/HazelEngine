@@ -8,7 +8,8 @@
 #include "Hazel/Core/Layer.h"
 #include "Hazel/Core/Log.h"
 #include "Hazel/Core/Timestep.h"
-
+#include "Hazel/Scene/Scene.h"
+#include "Hazel/Scene/Component.h"
 
 // ---Inputs------------------------
 #include "Hazel/Core/Input.h"

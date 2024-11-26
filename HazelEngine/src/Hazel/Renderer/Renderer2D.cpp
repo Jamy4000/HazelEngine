@@ -171,13 +171,56 @@ namespace Hazel
     {
 		HZ_PROFILE_FUNCTION()
 
-        if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-            FlushAndReset();
+        const auto unitMatrix = glm::mat4(1.0f);
+        const glm::mat4 transform = glm::translate(unitMatrix, position)
+            * glm::scale(unitMatrix, { size.x, size.y, 1.0f });
+
+        DrawQuad(transform, color);
+    }
+
+    void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture,
+        const float tillingFactor, const glm::vec4& tintColor)
+    {
+        DrawQuad({position.x, position.y, 0.0f}, size, texture, tillingFactor, tintColor);
+    }
+
+    void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture,
+        const float tillingFactor, const glm::vec4& tintColor)
+    {
+        HZ_PROFILE_FUNCTION()
 
         const auto unitMatrix = glm::mat4(1.0f);
         const glm::mat4 transform = glm::translate(unitMatrix, position)
             * glm::scale(unitMatrix, { size.x, size.y, 1.0f });
 
+        DrawQuad(transform, texture, tillingFactor, tintColor);
+    }
+
+    void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture,
+        const float tillingFactor, const glm::vec4& tintColor)
+    {
+        DrawQuad({position.x, position.y, 0.0f}, size, subTexture, tillingFactor, tintColor);
+    }
+
+    void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture,
+        const float tillingFactor, const glm::vec4& tintColor)
+    {
+        HZ_PROFILE_FUNCTION()
+        
+        const auto unitMatrix = glm::mat4(1.0f);
+        const glm::mat4 transform = glm::translate(unitMatrix, position)
+            * glm::scale(unitMatrix, { size.x, size.y, 1.0f });
+        
+        DrawQuad(transform, subTexture, tillingFactor, tintColor);
+    }
+
+    void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+    {
+        HZ_PROFILE_FUNCTION()
+
+        if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+            FlushAndReset();
+        
         constexpr size_t quadVertexCount = 4;
         for (size_t i = 0; i < quadVertexCount; i++)
         {
@@ -198,14 +241,8 @@ namespace Hazel
         s_Data.Stats.QuadCount++;
     }
 
-    void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture,
-        const float tillingFactor, const glm::vec4& tintColor)
-    {
-        DrawQuad({position.x, position.y, 0.0f}, size, texture, tillingFactor, tintColor);
-    }
-
-    void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture,
-        const float tillingFactor, const glm::vec4& tintColor)
+    void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, float tillingFactor,
+        const glm::vec4& tintColor)
     {
         HZ_PROFILE_FUNCTION()
 
@@ -233,10 +270,6 @@ namespace Hazel
             s_Data.TextureSlotIndex++;
         }
         
-        const auto unitMatrix = glm::mat4(1.0f);
-        const glm::mat4 transform = glm::translate(unitMatrix, position)
-            * glm::scale(unitMatrix, { size.x, size.y, 1.0f });
-            
         constexpr size_t quadVertexCount = 4;
         for (size_t i = 0; i < quadVertexCount; i++)
         {
@@ -255,14 +288,8 @@ namespace Hazel
         s_Data.Stats.QuadCount++;
     }
 
-    void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture,
-        const float tillingFactor, const glm::vec4& tintColor)
-    {
-        DrawQuad({position.x, position.y, 0.0f}, size, subTexture, tillingFactor, tintColor);
-    }
-
-    void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subTexture,
-        const float tillingFactor, const glm::vec4& tintColor)
+    void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D>& subTexture, float tillingFactor,
+        const glm::vec4& tintColor)
     {
         HZ_PROFILE_FUNCTION()
 
@@ -290,10 +317,6 @@ namespace Hazel
             s_Data.TextureSlotIndex++;
         }
         
-        const auto unitMatrix = glm::mat4(1.0f);
-        const glm::mat4 transform = glm::translate(unitMatrix, position)
-            * glm::scale(unitMatrix, { size.x, size.y, 1.0f });
-            
         const glm::vec2* textureCoords = subTexture->GetTextureCoordinates();
             
         constexpr size_t quadVertexCount = 4;
