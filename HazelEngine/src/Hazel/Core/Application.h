@@ -23,10 +23,11 @@ namespace Hazel
 		void PushOverlay(Layer* overlay);
 
 		void Close();
-		
-		[[nodiscard]] static Application& Get() { return *s_Instance; }
 
-		[[nodiscard]] Window& GetWindow() const { return *m_Window; }
+		[[nodiscard]] ImGuiLayer* GetImGuiLayer()	const { return m_ImGuiLayer; }
+		[[nodiscard]] Window& GetWindow()			const { return *m_Window; }
+		
+		[[nodiscard]] static Application& Get()			  { return *s_Instance; }
 		
 	private:
 		void Run();
